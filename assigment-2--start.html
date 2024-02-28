@@ -51,16 +51,29 @@
     
 	<script>
 
-		const main_image = ["drag", "fig", "grap", "pass", "pom", "straw"];
+		let current_index = 0;
+
+		const main_image = [
+			"drag", "fig", "grap", "pass", "pom", "straw"
+		];
 
 		const first_load = () => { 
 			// TODO: set the main image to the first image in the array (index 0)
-			// TODO: set the thumbnail images		
+			set_main_image(0)
+
+			// TODO: set the thumbnail images
+			set_thumbnails();
+			
 		}
 	
 		const set_main_image = (index) => {
+
+			document.querySelector("#main-image").src = "images/" + main_image[index] + "Full.jpg";
+
+			current_index = main_image;
+
 			// TODO: set the main-image src image based on the passed parameter	    
-	
+			
 			// TODO: set the hidden textbox to the current index (if you take this approach)	    
 	
 			// update the thumbnails based on the current selection
@@ -72,7 +85,7 @@
 	
 			// TODO: loop through the global array and build the html
 			//       - add an onclick handler to each thumbnail to call set_main_image(index)
-	
+			
 			// TODO: add the html to the divThumbArea
 	
 		} 
