@@ -89,6 +89,7 @@
 			//       - add an onclick handler to each thumbnail to call set_main_image(index)
 
 			fruit_images.forEach((fruits, index) => {
+
 				const addElement = document.createElement("img");
 
 				addElement.src = "images/" + fruits + "Thumb.jpg";
@@ -100,9 +101,8 @@
 				})
 
 				document.querySelector("#thumbnail-area").append(addElement);
-			})
 
-			// })
+			})
 
 			// TODO: add the html to the divThumbArea
 	
