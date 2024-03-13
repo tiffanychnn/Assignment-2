@@ -58,6 +58,9 @@
     
 	<script>
 
+		// line 64 - 146 : help received by neal
+		// line 150 - 183 : help received by masha
+
 		// the let allows the current index to change (which are the images)
 		let current_index = 0;
 
@@ -108,7 +111,7 @@
 				addElement.classList = "clickable"
 				
 				// this is to set the opacity of the thumbnail images
-				// we used ternary statement so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
+				// we used ternary operator so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
 				addElement.style.opacity = (current_index == index) ? "1" : "0.5"
 
 				// we're making the thumbnail images clickable by adding an addEventListener
@@ -136,7 +139,7 @@
 			thumbs.forEach((thumb, index) => {
 
 				// were changing the opacity of the thumbnails like what we did above
-				// ternary statement is used here so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
+				// ternary  is used here so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
 				thumb.style.opacity = (current_index == index) ? "1" : "0.5"
 
 			});
@@ -163,7 +166,8 @@
 		// this arrow funciton is for the next btn
 		const set_nav_next = () => {
 
-			// a ternary statement 
+			// we used a operator because if we were on the last img on the thumbnail gallery then we  want it to go to the first image on the array ( which is 0)
+			// if we weren't on the last image of the array then we want it to add one (go next) to keep going
 			current_index>=fruit_images.length-1 ? set_main_image(0) : set_main_image(current_index + 1);
 
 		}
@@ -171,12 +175,14 @@
 		// this arrow function is for the prev btn
 		const set_nav_prev = () => {
 
-			// 
+			// like what we did for set_nav_next we used the ternary operator again
+			// if we're at image (in the array its 0) and we want to go "below" that then its going to subtract 1 and go to the last image in the array
+			// but if we were at any other images other than image 0, then it would subtract 1 from the current_index
 			current_index<=0 ? set_main_image(fruit_images.length-1) : set_main_image(current_index - 1);
 
 		}	
 	
-		// 
+		// this event listener is for making the window load the first_load function first
 		window.addEventListener("load", first_load);
 
 	</script>
