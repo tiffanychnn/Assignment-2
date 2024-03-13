@@ -11,6 +11,7 @@
 	    
 	    img.clickable{
 	        cursor:pointer;
+			opacity: 0.5;
 	    }
 	
 	</style>
@@ -27,7 +28,7 @@
 	            <td style="text-align:center;">
                     <div><img id="main-image" alt="Main Image" /></div>
 
-                    <!-- you may or may not use this hidden textbox-->
+
                     <div><input id="current-index" /></div>    
                 </td>
 	            <td></td>
@@ -35,15 +36,21 @@
 	        </tr>
 	        <tr>
 	            <td>
-	                <img src="images/first.png" id="first-btn" />            
-	                <img src="images/prev.png" id="prev-btn" />
+					<!-- the attribute onclick="set_nav_first()" is for when the first btn is clicked, then it will run the set_nav_first function -->
+	                <img src="images/first.png" id="first-btn" onclick="set_nav_first()"/>  
+					
+					<!-- the attribute onclick="set_nav_prev" is for when the prev btn is clicked, then it will run the set_nav_prev function -->
+	                <img src="images/prev.png" id="prev-btn" onclick="set_nav_prev()"/>
 	            </td>
 	            <td>
 	                <div id="thumbnail-area"></div>	        
 	            </td>
 	            <td>
-	                <img src="images/next.png" id="next-btn" />            
-	                <img src="images/last.png" id="prev-btn" />
+					<!-- the attribute onclick="set_nav_next()" will run the set_nav_next function when the next btn is clicked -->
+	                <img src="images/next.png" id="next-btn" onclick="set_nav_next()"/>       
+
+					<!-- the attribute onclick="set_nav_last()" will run the set_nav_last function when last btn is clicked -->
+	                <img src="images/last.png" id="last-btn" onclick="set_nav_last()" />
 	            </td>
 	        </tr>	    
 	    </table>       
@@ -51,87 +58,125 @@
     
 	<script>
 
+		// the let allows the current index to change (which are the images)
 		let current_index = 0;
 
+		// i created an array for the images im going to use, this helps me select a specific image
+		// the images wont change (nor the order of them), which is why i used const
 		const fruit_images = ["drag", "fig", "grap", "pass", "pom", "straw"];
 
-		// const main_image = [
-		// 	"drag", "fig", "grap", "pass", "pom", "straw"
-		// ];
-
+		// this arrow function runs the set_main_image and set_thumbnails function when the site loads
 		const first_load = () => { 
-			// TODO: set the main image to the first image in the array (index 0)
-			set_main_image(0)
 
-			// // TODO: set the thumbnail images
+			// we want the main image load as image 0 from the array
+			// because array starts counting from 0, we used current_index which is 0
+			// 0 in the array is "drag", which would result in the dragonfruit pic to load first
+			set_main_image(current_index);
+
+			// this is used to help us later when we're going to set the thumbnail images
 			set_thumbnails();
 			
 		}
 	
+		// this arrow function is for updating the main images based on the index
 		const set_main_image = (index) => {
-			// 														images/dragFull.jpg
+
+			// the dqS is to "connect" to the main-image id's source
+			// we concatenated the images/ + fruit_images[index] + Full.jpg so that the main images will be the "Full images"						
 			document.querySelector("#main-image").src = "images/" + fruit_images[index] + "Full.jpg";
-			// document.querySelector("#main-image").src = "images/" + main_image[value] + "Full.jpg";
 
-			// current_index = main_image;
-
-			// TODO: set the main-image src image based on the passed parameter	    
-			    
+			// this is for updating the current_index to index
+			current_index = index;
 	
-			// update the thumbnails based on the current selection
-			// update_thumbnails(value);
+			// this will update thumbnails based on the index
+			update_thumbnails(index);
 		}
 	
+		// this arrow function is for setting the thumbnails
 		const set_thumbnails = () => {
-			// TODO: declare a variable for the thumbnail strip html (optional)
-	
-			// TODO: loop through the global array and build the html
-			//       - add an onclick handler to each thumbnail to call set_main_image(index)
 
+			// the forEach will run through the images from the array
 			fruit_images.forEach((fruits, index) => {
 
+				// here im creating a new image(thumbnail images) using addElement
 				const addElement = document.createElement("img");
 
+				// im setting the source by using the src and then concatenating "images/" + fruits + "Thumb.jpg" like what i did for the other one above in set_main_images
 				addElement.src = "images/" + fruits + "Thumb.jpg";
 
+				// this connects the clickable from the css to the img
 				addElement.classList = "clickable"
+				
+				// this is to set the opacity of the thumbnail images
+				// we used ternary statement so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
+				addElement.style.opacity = (current_index == index) ? "1" : "0.5"
 
+				// we're making the thumbnail images clickable by adding an addEventListener
 				addElement.addEventListener("click", () => {
-					set_main_image(index);
-				})
 
+					// when the thumbnail image has been clicked then the set_main_image will match it
+					set_main_image(index);
+
+				});
+				
+				// the dqS is to connect the thumbnail-area id to make the thumbnails show up on the screen
 				document.querySelector("#thumbnail-area").append(addElement);
 
-			})
-
-			// TODO: add the html to the divThumbArea
+			});
 	
 		} 
 	
+		// this arrow function will be updating thumbnail images based on the current_index
 		const update_thumbnails = (current_index) => {
-			// TODO: you'll need to loop through all thumbnails
-			//		- turn on an indicator (eg opacity:1.0) if it's the selected thumb
-			//		- turn off the indicator (eg opacity:0.75) if it's not
-		} 
+
+			// i created a const for thumbs (which is the thumbnails) to connect to the thumbnail-area id
+			const thumbs = document.querySelectorAll("#thumbnail-area img");
+
+			// this will run through all the thumbnail images and the ones in the array
+			thumbs.forEach((thumb, index) => {
+
+				// were changing the opacity of the thumbnails like what we did above
+				// ternary statement is used here so if the current_index is equal to the index then the opacity is 1, if not then the opacity will be 0.5
+				thumb.style.opacity = (current_index == index) ? "1" : "0.5"
+
+			});
+
+		}
 	
+		// this arrow function is for the first btn
 		const set_nav_first = () => {
-			// TODO: navigate to the first image (this is the easy one since it's always index zero)
+
+			// when the first btn is clicked, i want it to go to the first image which in the array is 0 
+			// image 0 is the dragonfruit, which is going to show up
+			set_main_image(0);
 			
 		}
 	
+		// this arrow function is for the last btn
 		const set_nav_last = () => {
-			// TODO: navigate to the last image (should work for any size array)
+
+			// this is so that the last image of the array will subtract one and then when you click the btn it will go to the last image of the row of thumbnails
+			set_main_image(fruit_images.length -1);
+
 		}
 	
+		// this arrow funciton is for the next btn
 		const set_nav_next = () => {
-			// TODO: move to the next image, unless at the end in which case show the first image
-			
+
+			// a ternary statement 
+			current_index>=fruit_images.length-1 ? set_main_image(0) : set_main_image(current_index + 1);
+
 		}
 	
+		// this arrow function is for the prev btn
 		const set_nav_prev = () => {
-			// TODO: move to the previous image, unless at the end in which case show the last image
+
+			// 
+			current_index<=0 ? set_main_image(fruit_images.length-1) : set_main_image(current_index - 1);
+
 		}	
 	
+		// 
 		window.addEventListener("load", first_load);
 
 	</script>
